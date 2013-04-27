@@ -27,7 +27,7 @@ SDL_Color textColor = {0, 0, 0};
 bool init();
 SDL_Surface *load_image(std::string filename);
 bool load_files();
-void apply_surface(int x, int y, SDL_Surface *source, SDL_Surface *destination, SDL_Rect *clip);
+void apply_surface(int x, int y, SDL_Surface *source, SDL_Surface *destination, SDL_Rect *clip = NULL);
 void clean_up();
 
 // Timer class
@@ -183,7 +183,7 @@ bool load_files()
 	}
 	return true;
 }
-void apply_surface(int x, int y, SDL_Surface *source, SDL_Surface *destination, SDL_Rect *clip = NULL)
+void apply_surface(int x, int y, SDL_Surface *source, SDL_Surface *destination, SDL_Rect *clip)
 {
 	SDL_Rect offset;
 	offset.x = x;
