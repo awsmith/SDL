@@ -93,8 +93,12 @@ private:
 int main(int argc, char *args[])
 {
 	Timer fps;
-	Dot myDot(0, 0, 0);
-	Dot otherDot(20, 20, 1);
+	int schemeOne = atoi(args[argc + 1].c_str());
+	int schemeTwo = ato(args[argc + 2].c_str());
+	
+	
+	Dot myDot(0, 0, schemeOne);
+	Dot otherDot(20, 20, schemeTwo);
 
 	bool quit = false;
 
