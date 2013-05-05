@@ -90,15 +90,12 @@ private:
 	void shift_boxes();
 };
 
-int main(int argc, char *args[])
+int main()
 {
 	Timer fps;
-	int schemeOne = atoi(args[argc + 1].c_str());
-	int schemeTwo = ato(args[argc + 2].c_str());
 	
-	
-	Dot myDot(0, 0, schemeOne);
-	Dot otherDot(20, 20, schemeTwo);
+	Dot myDot(0, 0, 1);
+	Dot otherDot(20, 20, 2);
 
 	bool quit = false;
 
