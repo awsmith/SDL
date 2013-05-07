@@ -114,7 +114,7 @@ int main(int argc, char **args)
 
 	Timer fps;
 
-	// While the userhasn't quit
+	// While the user hasn't quit
 	while(quit == false)
 	{
 		fps.start();
@@ -135,13 +135,14 @@ int main(int argc, char **args)
 		myDot.move(box, otherDot);
 	
 		// Fill the screen white
-		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
+		SDL_FillRect(screen, &screen->clip_rect,  SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
 
 		// Show the box
 		SDL_FillRect(screen, &box[0], SDL_MapRGB(screen->format, 0x00, 0x00, 0x00));
 
 		// Show the other dot
 		myDot.show();
+		apply_surface(otherDot.x - otherDot.r, otherDot.y - otherDot.r, dot, screen);
 
 		// Update the screen
 		if(SDL_Flip(screen) == -1)
@@ -184,7 +185,7 @@ SDL_Surface *load_image(std::string filename)
 	if(loadedImage != NULL)
 	{
 		optimizedImage = SDL_DisplayFormat(loadedImage);
-		SDL_FreeSurface(optimizedImage);
+		SDL_FreeSurface(loadedImage);
 		if(optimizedImage != NULL)
 		{
 			SDL_SetColorKey(optimizedImage, SDL_SRCCOLORKEY, SDL_MapRGB(optimizedImage ->format, 0, 0xFF, 0xFF));
@@ -359,6 +360,8 @@ Dot::Dot()
 	c.x = DOT_WIDTH / 2;
 	c.y = DOT_WIDTH / 2;
 	c.r = DOT_WIDTH / 2;
+	xVel = 0;
+	yVel = 0;
 }
 
 void Dot::handle_input()
@@ -367,20 +370,20 @@ void Dot::handle_input()
 	{
 		switch(event.key.keysym.sym)
 		{
-		case SDLK_UP: yVel -= 1;
-		case SDLK_DOWN: yVel += 1;
-		case SDLK_LEFT: xVel -= 1;
-		case SDLK_RIGHT: xVel += 1;
+		case SDLK_UP: yVel -= 1; break;
+		case SDLK_DOWN: yVel += 1; break;
+		case SDLK_LEFT: xVel -= 1; break;
+		case SDLK_RIGHT: xVel += 1; break;
 		}
 	}
 	if(event.type == SDL_KEYUP)
 	{
 		switch(event.key.keysym.sym)
 		{
-			case SDLK_UP: yVel += 1;
-			case SDLK_DOWN: yVel -= 1;
-			case SDLK_LEFT: xVel += 1;
-			case SDLK_RIGHT: xVel -= 1;
+			case SDLK_UP: yVel += 1; break;
+			case SDLK_DOWN: yVel -= 1; break;
+			case SDLK_LEFT: xVel += 1; break;
+			case SDLK_RIGHT: xVel -= 1; break;
 		}
 	}
 }
