@@ -1,0 +1,32 @@
+// WIP
+
+// Classes
+class Foo 
+{ 
+  private: 
+    // The offset 
+    int offSet; 
+    
+    // Rate of movement 
+    int velocity; 
+    
+    // Its current frame 
+    int frame; 
+    
+    // Its animation status 
+    int status; 
+
+  public:
+    
+    // Default constructor
+    Foo(); 
+    
+    // Handles input 
+    void handle_events(); 
+    
+    // Moves the stick figure 
+    void move(); 
+    
+    // Shows the stick figure 
+    void show(); 
+};
