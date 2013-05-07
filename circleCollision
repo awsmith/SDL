@@ -23,8 +23,9 @@ SDL_Event event;
 // Structs
 struct Circle
 {
-  // Coordinates
+        // Coordinates
 	int x, y;
+
 	// Radius
 	int r;
 };
@@ -32,13 +33,6 @@ struct Circle
 // Classes
 class Dot
 {
-	private:
-	// The area of the dot
-	Circle c;
-
-	// The veolicty of the dot
-	int xVel, yVel;
-
 	public:
 	// Constructor
 	Dot();
@@ -51,16 +45,17 @@ class Dot
 
 	// Shows the dot on the screen
 	void show();
+
+	private:
+	// The area of the dot
+	Circle c;
+
+	// The veolicty of the dot
+	int xVel, yVel;
 };
 
 class Timer
 {
-	private:
-		int startTicks;
-		int pausedTicks;
-		bool paused;
-		bool started;
-
 	public:
 		Timer();
 		bool is_started();
@@ -70,6 +65,12 @@ class Timer
 		void pause();
 		void stop();
 		void unpause();
+
+	private:
+		int startTicks;
+		int pausedTicks;
+		bool paused;
+		bool started;
 };
 
 // Prototypes
@@ -111,20 +112,23 @@ int main(int argc, char **args)
 	otherDot.x = 30;
 	otherDot.y = 30;
 	otherDot.r = DOT_WIDTH / 2;
-
+	
+	// Create timer for frame limit
 	Timer fps;
 
 	// While the user hasn't quit
 	while(quit == false)
 	{
+		// Start timer
 		fps.start();
+
 		// While there are events to handle
 		while(SDL_PollEvent(&event))
 		{
-			// Handle input
+			// Handle input for dot
 			myDot.handle_input();
 
-			// Quit window
+			// Quit window if user hits "x"
 			if(event.type == SDL_QUIT)
 			{
 				quit = true;
@@ -140,8 +144,10 @@ int main(int argc, char **args)
 		// Show the box
 		SDL_FillRect(screen, &box[0], SDL_MapRGB(screen->format, 0x00, 0x00, 0x00));
 
-		// Show the other dot
+		// Show moving dot
 		myDot.show();
+
+		// Show stationary dot
 		apply_surface(otherDot.x - otherDot.r, otherDot.y - otherDot.r, dot, screen);
 
 		// Update the screen
@@ -156,6 +162,7 @@ int main(int argc, char **args)
 			SDL_Delay((1000 / FRAMES_PER_SECOND) - fps.get_ticks());
 		}
 	}
+
 	clean_up();
 	return 0;
 }		
@@ -228,6 +235,7 @@ double distance(int x1, int y1, int x2, int y2)
 	return sqrt(pow(x2 - x1, 2.) + pow( y2 - y1, 2.));
 }
 
+// Check collision for two instances of circle
 bool check_collision(Circle &A, Circle &B)
 {
 	// If the distance between the centers of the circles is less than the sum of their radii
@@ -241,6 +249,7 @@ bool check_collision(Circle &A, Circle &B)
 	return false;
 }
 
+// Check collision for for instance of cicle vs 
 bool check_collision(Circle &A, std::vector<SDL_Rect> &B)
 {
 	// Closest point on collision box
@@ -360,6 +369,7 @@ Dot::Dot()
 	c.x = DOT_WIDTH / 2;
 	c.y = DOT_WIDTH / 2;
 	c.r = DOT_WIDTH / 2;
+	// Dot will not move if velocities are not initialized to 0
 	xVel = 0;
 	yVel = 0;
 }
