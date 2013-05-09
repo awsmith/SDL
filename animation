@@ -172,7 +172,7 @@ bool init()
 bool load_files()
 {
 	foo = load_image("foo.png");
-	if(foo = NULL)
+	if(foo == NULL)
 	{
 		return false;
 	}
