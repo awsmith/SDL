@@ -44,6 +44,9 @@ class Foo
     // Its animation status 
     int status; 
 
+    // Jump
+    int yAxis;
+
   public:
     
     // Default constructor
@@ -257,6 +260,7 @@ Foo::Foo()
 	// Init movement variables
 	offSet = 0;
 	velocity = 0;
+	yAxis = 0;
 
 	// Init animation variables
 	frame = 0;
@@ -313,12 +317,20 @@ void Foo::show()
 	// Shows the stick figure
 	if(status == FOO_RIGHT)
 	{
-		apply_surface(offSet, SCREEN_HEIGHT - FOO_HEIGHT, foo, screen, &clipsRight[frame]);
+		apply_surface(offSet, SCREEN_HEIGHT - FOO_HEIGHT - yAxis, foo, screen, &clipsRight[frame]);
+		if(yAxis > 0)
+		{
+			yAxis -= FOO_HEIGHT / 5;
+		}
 	}
 	
 	else if(status == FOO_LEFT)
 	{
-		apply_surface(offSet, SCREEN_HEIGHT - FOO_HEIGHT, foo, screen, &clipsLeft[frame]);
+		apply_surface(offSet, SCREEN_HEIGHT - FOO_HEIGHT - yAxis, foo, screen, &clipsLeft[frame]);
+		if(yAxis > 0)
+		{
+			yAxis -= FOO_HEIGHT / 5;
+		}
 	}
 }
 
@@ -330,6 +342,7 @@ void Foo::handle_events()
 		{
 			case SDLK_LEFT: velocity -= FOO_WIDTH / 4; break;
 			case SDLK_RIGHT: velocity += FOO_WIDTH /4; break;
+			case SDLK_UP: yAxis += FOO_HEIGHT; break;
 		}
 	}
 	else if(event.type == SDL_KEYUP)
