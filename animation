@@ -28,6 +28,14 @@ SDL_Rect clipsLeft[4];
 SDL_Surface *screen = NULL;
 SDL_Surface *foo = NULL;
 
+// Prototypes
+SDL_Surface *load_image(std::string filename);
+void apply_surface(int x, int y, SDL_Surface *source, SDL_Surface *destination, SDL_Rect *clip = NULL);
+void set_clips() ;
+bool init();
+bool load_files();
+void clean_up();
+
 // Classes
 class Foo 
 { 
@@ -80,6 +88,75 @@ public:
 	void unpause();
 };
 
+int main(int argc, char *args[])
+{
+	bool quit = false;
+
+	if(init() == false)
+	{
+		return 1;
+	}
+
+	if(load_files() == false)
+	{
+		return 1;
+	}
+
+	// Set the sprite sheet clips
+	set_clips();
+
+	// The frame rate regulator
+	Timer fps;
+
+	// Make the stick figure
+	Foo walk;
+
+	// While the user hasn't quit
+	while(quit == false)
+	{
+		// Start the frame timer
+		fps.start();
+
+		// While there's events to handle
+		while(SDL_PollEvent(&event))
+		{
+			// Handle events for the stick figure
+			walk.handle_events();
+
+			// If the user has Xed out the window
+			if(event.type == SDL_QUIT)
+			{
+				// Quit the program
+				quit = true;
+			}
+		}
+
+		// Move the stick figure
+		walk.move();
+
+		// Fill the screen white
+		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
+
+		// Show the stick figure on screen
+		walk.show();
+
+		// Update the screen
+		if(SDL_Flip(screen) == -1)
+		{
+			return 1;
+		}
+
+		// Cap the frame rate
+		if(fps.get_ticks() < 1000 / FRAMES_PER_SECOND)
+		{
+			SDL_Delay((1000 / FRAMES_PER_SECOND) - fps.get_ticks());
+		}
+	}
+
+	clean_up();
+	return 0;
+}
+
 SDL_Surface *load_image(std::string filename)
 {
 	SDL_Surface *loadedImage = NULL;
@@ -99,7 +176,7 @@ SDL_Surface *load_image(std::string filename)
 	return optimizedImage;
 }
 
-void apply_surface(int x, int y, SDL_Surface *source, SDL_Surface *destination, SDL_Rect *clip = NULL)
+void apply_surface(int x, int y, SDL_Surface *source, SDL_Surface *destination, SDL_Rect *clip)
 {
 	SDL_Rect offset;
 	offset.x = x;
@@ -353,73 +430,4 @@ void Foo::handle_events()
 			case SDLK_RIGHT: velocity -= FOO_WIDTH / 4; break;
 		}
 	}
-}
-
-int main(int argc, char *args[])
-{
-	bool quit = false;
-
-	if(init() == false)
-	{
-		return 1;
-	}
-
-	if(load_files() == false)
-	{
-		return 1;
-	}
-
-	// Set the sprite sheet clips
-	set_clips();
-
-	// The frame rate regulator
-	Timer fps;
-
-	// Make the stick figure
-	Foo walk;
-
-	// While the user hasn't quit
-	while(quit == false)
-	{
-		// Start the frame timer
-		fps.start();
-
-		// While there's events to handle
-		while(SDL_PollEvent(&event))
-		{
-			// Handle events for the stick figure
-			walk.handle_events();
-
-			// If the user has Xed out the window
-			if(event.type == SDL_QUIT)
-			{
-				// Quit the program
-				quit = true;
-			}
-		}
-
-		// Move the stick figure
-		walk.move();
-
-		// Fill the screen white
-		SDL_FillRect(screen, &screen->clip_rect, SDL_MapRGB(screen->format, 0xFF, 0xFF, 0xFF));
-
-		// Show the stick figure on screen
-		walk.show();
-
-		// Update the screen
-		if(SDL_Flip(screen) == -1)
-		{
-			return 1;
-		}
-
-		// Cap the frame rate
-		if(fps.get_ticks() < 1000 / FRAMES_PER_SECOND)
-		{
-			SDL_Delay((1000 / FRAMES_PER_SECOND) - fps.get_ticks());
-		}
-	}
-
-	clean_up();
-	return 0;
 }
