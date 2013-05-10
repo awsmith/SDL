@@ -39,53 +39,53 @@ void clean_up();
 // Classes
 class Foo 
 { 
-  private: 
-    // The offset 
-    int offSet; 
-    
-    // Rate of movement 
-    int velocity; 
-    
-    // Its current frame 
-    int frame; 
-    
-    // Its animation status 
-    int status; 
+ 	private: 
+	    	// The offset 
+	    	int offSet; 
+	    
+	    	// Rate of movement 
+	    	int velocity; 
+	    
+	   	// Its current frame 
+	    	int frame; 
+	    
+	  	// Its animation status 
+	    	int status; 
+	
+	    	// Jump
+	    	int yAxis;
 
-    // Jump
-    int yAxis;
-
-  public:
+  	public:
     
-    // Default constructor
-    Foo(); 
-    
-    // Handles input 
-    void handle_events(); 
-    
-    // Moves the stick figure 
-    void move(); 
-    
-    // Shows the stick figure 
-    void show(); 
+	   	// Default constructor
+	    	Foo(); 
+	    
+	    	// Handles input 
+	    	void handle_events(); 
+	    
+	    	// Moves the stick figure 
+	    	void move(); 
+	    
+	    	// Shows the stick figure 
+	    	void show(); 
 };
 
 class Timer
 {
-private:
-  int pausedTicks;
-	int startTicks;
-	bool started;
-	bool paused;
-public:
-	Timer();
-	bool is_started();
-	bool is_paused();
-	int get_ticks();
-	void start();
-	void stop();
-	void pause();
-	void unpause();
+	private:
+  		int pausedTicks;
+		int startTicks;
+		bool started;
+		bool paused;
+	public:
+		Timer();
+		bool is_started();
+		bool is_paused();
+		int get_ticks();
+		void start();
+		void stop();
+		void pause();
+		void unpause();
 };
 
 int main(int argc, char *args[])
@@ -157,6 +157,8 @@ int main(int argc, char *args[])
 	return 0;
 }
 
+
+// Functinon Definitions
 SDL_Surface *load_image(std::string filename)
 {
 	SDL_Surface *loadedImage = NULL;
@@ -265,6 +267,7 @@ void clean_up()
 	SDL_Quit();
 }
 
+// Timer class definitions
 Timer::Timer()
 {
 	pausedTicks = 0;
@@ -332,6 +335,7 @@ void Timer::unpause()
 	}
 }
 
+// Foo class definitions
 Foo::Foo()
 {
 	// Init movement variables
